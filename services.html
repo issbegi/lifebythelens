@@ -501,7 +501,13 @@
             border-radius: 12px;
         }
 
+        /* Hover flip for desktop */
         .service-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Click flip for mobile */
+        .service-card .card-inner.flipped {
             transform: rotateY(180deg);
         }
 
@@ -636,6 +642,26 @@
 
             .card-front p {
                 font-size: 0.9rem;
+            }
+
+            /* Hide card name (h3) on back for mobile to save space and avoid redundancy */
+            .card-back h3 {
+                display: none;
+            }
+
+            /* Adjust back padding and spacing for better mobile fit */
+            .card-back {
+                padding: 1.5rem;
+            }
+
+            .card-back .ideal-for {
+                margin-top: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .card-back p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
             }
         }
         /* FAQ SECTION */
@@ -1100,6 +1126,25 @@
                 toggle.textContent = '−';
             }
         }
+
+        // Mobile flip card functionality (tap to flip)
+        function initMobileFlip() {
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.service-card').forEach(card => {
+                    card.style.cursor = 'pointer'; // Indicate tappable
+                    card.addEventListener('click', function(e) {
+                        // Prevent if clicking on links/buttons inside
+                        if (e.target.closest('.quote-btn')) return;
+                        const inner = this.querySelector('.card-inner');
+                        inner.classList.toggle('flipped');
+                    });
+                });
+            }
+        }
+
+        // Initialize on load, and re-check on resize
+        window.addEventListener('load', initMobileFlip);
+        window.addEventListener('resize', initMobileFlip);
     </script>
 </body>
 
